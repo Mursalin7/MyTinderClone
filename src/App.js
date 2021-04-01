@@ -11,10 +11,17 @@ function App() {
     <div className="App">
       <Router>
         <Switch>
-          <Route path="/chats/:person">
-            <Header backButton="/chats" />
-            <ChatScreen />
-          </Route>
+          <Route
+            path="/chats/:person"
+            render={routeProps => (
+              <div>
+                <Header backButton="/chats" />
+                <ChatScreen {...routeProps} />
+              </div>
+            )}
+          />
+          >{/*             
+          </Route> */}
           <Route path="/chats">
             <Header backButton="/" />
             <Chats />

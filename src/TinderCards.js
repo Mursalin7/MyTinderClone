@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import TinderCard from "react-tinder-card";
 import "./TinderCards.css";
-import database from "./firebase";
+import {database,firebaseApp} from "./firebase";
 
 function TinderCards() {
   const [people, setPeople] = useState([]);
@@ -16,14 +16,22 @@ function TinderCards() {
     };
   }, []);
 
+  const swiped = (direction, name, url) => {
+    if (direction === 'right'){
+      const matchedRef = firebaseApp.database().ref('Matched');
+      const item = {name, url}
+      matchedRef.push(item);
+    }
+  }
   return (
-    <div className="header">
+    <div>
       <div className="tinderCards_cardContainer">
         {people.map(person => (
           <TinderCard
             className="swipe"
             key={person.name}
             preventSwipe={["up", "down"]}
+            onSwipe={(dir) => swiped(dir, person.name, person.url)}
           >
             <div
               style={{ backgroundImage: `url(${person.url})` }}
